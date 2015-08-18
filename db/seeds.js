@@ -1,3 +1,12 @@
+var Sequelize = require("sequelize");
+var config    = require("./connection");
+var sequelize = new Sequelize("postgres:///do_something");
+
+var Artist = require("../models/artist");
+var Song = require("../models/song");
+
+
+/*
 require 'active_record'
 require_relative 'connection'
 
@@ -32,3 +41,4 @@ song_data.each_pair do |artist_name, songs|
     })
   end
 end
+*/
