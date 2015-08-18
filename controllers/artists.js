@@ -1,42 +1,56 @@
-# index
-get "/artists" do
-  @artists = Artist.all
-  erb(:"artists/index")
-end
+var express = require("express");
+var router = express.Router();
+var Artist = require("../db/connection").models.Artist;
 
-# new
-get "/artists/new" do
-  erb(:"artists/new")
-end
+function error(response, message){
+  response.status(500);
+  response.json({error: message})
+}
 
-# create
-post "/artists" do
-  @artist = Artist.create!(params[:artist])
-  redirect("/artists/#{@artist.id}")
-end
+router.get("/artists", function(req, res){
+  Artist.findAll().then(function(artists){
+    res.json(artists);
+  });
+});
 
-#show
-get "/artists/:id" do
-  @artist = Artist.find(params[:id])
-  erb(:"artists/show")
-end
+router.post("/artists", function(req, res){
+  Artist.create(req.body).then(function(artist){
+    res.json(artist);
+  });
+});
 
-# edit
-get "/artists/:id/edit" do
-  @artist = Artist.find(params[:id])
-  erb(:"artists/edit")
-end
+router.get("/artists/:id", function(req, res){
+  Artist.findById(req.params.id).then(function(artist){
+    if(!artist) return error(res, "not found");
+    res.json(artist);
+  });
+});
 
-# update
-put "/artists/:id" do
-  @artist = Artist.find(params[:id])
-  @artist.update(params[:artist])
-  redirect("/artists/#{@artist.id}")
-end
+router.get("/artists/:id/songs", function(req, res){
+  Artist.findById(req.params.id).then(function(artist){
+    if(!artist) return error(res, "not found");
+    artist.getSongs().then(function(songs){
+      res.send(songs);
+    });
+  });
+});
 
-# destroy
-delete "/artists/:id" do
-  @artist = Artist.find(params[:id])
-  @artist.destroy
-  redirect to("/artists")
-end
+router.patch("/artists/:id", function(req, res){
+  Artist.findById(req.params.id).then(function(artist){
+    if(!artist) return error(res, "not found");
+    artist.updateAttributes(req.body).then(function(updatedArtist){
+      res.json(updatedArtist);
+    });
+  });
+});
+
+router.delete("/artists/:id", function(req, res){
+  Artist.findById(req.params.id).then(function(artist){
+    if(!artist) return error(res, "not found");
+    artist.destroy().then(function(){
+      res.json({success: true});
+    });
+  });
+});
+
+module.exports = router;

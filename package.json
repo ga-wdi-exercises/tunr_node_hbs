@@ -4,6 +4,7 @@
   "description": "Tunr is the worlds #1 music web app (those Spotify haters can't keep up with us).",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.13.3",
     "express": "^4.13.3",
     "pg": "^4.4.1",
     "pg-hstore": "^2.3.2",

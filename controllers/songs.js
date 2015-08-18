@@ -1,42 +1,47 @@
-# index
-get "/songs" do
-  @songs = Song.all
-  erb(:"songs/index")
-end
+var express = require("express");
+var router = express.Router();
+var Song = require("../db/connection").models.Song;
 
-# new
-get "/songs/new" do
-  erb(:"songs/new")
-end
+function error(response, message){
+  response.status(500);
+  response.json({error: message})
+}
 
-# create
-post "/songs" do
-  @song = Song.create!(params[:song])
-  redirect("/songs/#{@song.id}")
-end
+router.get("/songs", function(req, res){
+  Song.findAll().then(function(songs){
+    res.json(songs);
+  });
+});
 
-#show
-get "/songs/:id" do
-  @song = Song.find(params[:id])
-  erb(:"songs/show")
-end
+router.post("/songs", function(req, res){
+  Song.create(req.body).then(function(song){
+    res.json(song);
+  });
+});
 
-# edit
-get "/songs/:id/edit" do
-  @song = Song.find(params[:id])
-  erb(:"songs/edit")
-end
+router.get("/songs/:id", function(req, res){
+  Song.findById(req.params.id).then(function(song){
+    if(!song) return error(res, "not found");
+    res.json(song);
+  });
+});
 
-# update
-put "/songs/:id" do
-  @song = Song.find(params[:id])
-  @song.update(params[:song])
-  redirect("/songs/#{@song.id}")
-end
+router.patch("/songs/:id", function(req, res){
+  Song.findById(req.params.id).then(function(song){
+    if(!song) return error(res, "not found");
+    song.updateAttributes(req.body).then(function(updatedSong){
+      res.json(updatdSong);
+    });
+  });
+});
 
-# destroy
-delete "/songs/:id" do
-  @song = Song.find(params[:id])
-  @song.destroy
-  redirect to("/songs")
-end
+router.delete("/songs/:id", function(req, res){
+  Song.findById(req.params.id).then(function(song){
+    if(!song) return error(res, "not found");
+    song.destroy().then(function(){
+      res.json({success: true});
+    });
+  });
+});
+
+module.exports = router;
