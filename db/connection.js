@@ -1,12 +1,16 @@
-# Load Active Record and connect to the DB
-ActiveRecord::Base.establish_connection({
-  database: 'tunr_db',
-  adapter: 'postgresql'
-})
+var Sequelize = require("sequelize");
+var sequelize = new Sequelize("postgres:///tunr_db");
+var Artist = sequelize.import("../models/artist");
+var Song = sequelize.import("../models/song");
 
-# Fix an issue with sinatra and Active Record where connections are left open
-if defined? Sinatra
-	after do
-	  ActiveRecord::Base.connection.close
-	end
-end
+Song.belongsTo(Artist);
+Artist.hasMany(Song);
+
+module.exports = {
+  sql: Sequelize,
+  do: sequelize,
+  models: {
+    Song: Song,
+    Artist: Artist
+  }
+}

@@ -1,8 +1,8 @@
 module.exports = function(sequelize, DataTypes){
-  var Song = sequelize.define("Song", {
+  return sequelize.define("song", {
     title: DataTypes.STRING,
     album: DataTypes.STRING,
-    preview_url: DataTypes.STRING,
-    artist_id: DataTypes.INTEGER
+    previewUrl: DataTypes.STRING,
+    artistId: DataTypes.INTEGER
   });
 }
