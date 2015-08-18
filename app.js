@@ -5,7 +5,6 @@ var bodyParser = require("body-parser");
 
 app.use(bodyParser.json())
 app.use("/public", express.static(path.join(__dirname + "/public")));
-app.set("view engine", "hbs");
 
 var artistsController = require("./controllers/artists");
 var songsController = require("./controllers/songs");
