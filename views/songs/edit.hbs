@@ -1,0 +1,22 @@
+<h2>Edit Song</h2>
+
+<form action="/songs/{{song.id}}?_method=PUT" method="post">
+
+  <label for="title">Title:</label>
+  <input name="title" value="{{song.title}}">
+
+  <label for="album">Album:</label>
+  <input name="album" value="{{song.album}}">
+
+  <label for="previewUrl">Preview URL:</label>
+  <input name="previewUrl" value="{{song.previewUrl}}">
+
+  <label for="artistId">Artist ID:</label>
+  <input name="artistId" value="{{song.artistId}}">
+
+  <input type="submit" value="Edit">
+</form>
+
+<form action="/songs/{{song.id}}?_method=DELETE" method="post">
+  <input class="button-delete" type="submit" value="Delete!">
+</form>

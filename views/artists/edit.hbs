@@ -1,0 +1,18 @@
+<h2>Edit Artist</h2>
+
+<form action="/artists/{{artist.id}}?_method=PUT" method="post">
+  <label for="name">Name:</label>
+  <input name="name" value="{{artist.name}}">
+
+  <label for="artistx[photo_url">Photo URL:</label>
+  <input name="photoUrl" value="{{artist.photoUrl}}">
+
+  <label for="nationality">Nationality:</label>
+  <input name="nationality" value="{{artist.nationality}}">
+
+  <input type="submit" value="Edit">
+</form>
+
+<form action="/artists/{{artist.id}}?_method=DELETE" method="post">
+  <input class="button-delete" type="submit" value="Delete!">
+</form>

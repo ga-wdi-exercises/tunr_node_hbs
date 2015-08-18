@@ -1,0 +1,11 @@
+<h2>Songs <a href="/songs/new">(+)</a></h2>
+
+<ul>
+  {{#each songs}}
+  <li>
+    <a href="/songs/{{id}}">
+      {{title}} - {{artistName}}
+    </a>
+  </li>
+  {{/each}}
+</ul>
