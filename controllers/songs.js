@@ -23,10 +23,14 @@ function songsWithArtistNames(songs, artists){
 }
 
 router.get("/songs", function(req, res){
-  Song.findAll().then(function(songs){
-    Artist.findAll().then(function(artists){
-      res.render("songs/index", {songs: songsWithArtistNames(songs, artists)});
-    });
+  var songs;
+  Song.findAll()
+  .then(function(s){
+    songs = s;
+    return Artist.findAll()
+  })
+  .then(function(artists){
+    res.render("songs/index", {songs: songsWithArtistNames(songs, artists)});
   });
 });
 
@@ -42,12 +46,16 @@ router.post("/songs", function(req, res){
 });
 
 router.get("/songs/:id", function(req, res){
-  Song.findById(req.params.id).then(function(song){
+  var song;
+  Song.findById(req.params.id)
+  .then(function(s){
     if(!song) return error(res, "not found");
-    song.getArtist().then(function(artist){
-      song.artistName = artist.name;
-      res.render("songs/show", {song: song});
-    });
+    song = s;
+    return song.getArtist();
+  })
+  .then(function(artist){
+    song.artistName = artist.name;
+    res.render("songs/show", {song: song});
   });
 });
 
@@ -59,21 +67,27 @@ router.get("/songs/:id/edit", function(req, res){
 });
 
 router.put("/songs/:id", function(req, res){
+  var song;
   if(!req.body.artistId) return error(res, "Artist not found");
-  Song.findById(req.params.id).then(function(song){
+  Song.findById(req.params.id)
+  .then(function(s){
     if(!song) return error(res, "not found");
-    song.updateAttributes(req.body).then(function(updatedSong){
-      res.json(updatedSong);
-    });
+    song = s;
+    return song.updateAttributes(req.body);
+  })
+  .then(function(updatedSong){
+    res.redirect("/songs/" + updatedSong.id);
   });
 });
 
 router.delete("/songs/:id", function(req, res){
-  Song.findById(req.params.id).then(function(song){
+  Song.findById(req.params.id)
+  .then(function(song){
     if(!song) return error(res, "not found");
-    song.destroy().then(function(){
-      res.redirect("/songs")
-    });
+    return song.destroy();
+  })
+  .then(function(){
+    res.redirect("/songs");
   });
 });
 

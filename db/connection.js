@@ -7,8 +7,8 @@ Song.belongsTo(Artist);
 Artist.hasMany(Song);
 
 module.exports = {
-  sql: Sequelize,
-  do: sequelize,
+  Sequelize: Sequelize,
+  sequelize: sequelize,
   models: {
     Song: Song,
     Artist: Artist

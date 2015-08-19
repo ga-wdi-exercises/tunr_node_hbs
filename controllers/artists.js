@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-var Artist = require("../db/connection").models.Artist;
+var DB = require("../db/connection");
+var Artist = DB.models.Artist;
 
 function error(response, message){
   response.status(500);
@@ -24,11 +25,15 @@ router.post("/artists", function(req, res){
 });
 
 router.get("/artists/:id", function(req, res){
-  Artist.findById(req.params.id).then(function(artist){
-    if(!artist) return error(res, "not found");
-    artist.getSongs().then(function(songs){
-      res.render("artists/show", {artist: artist, songs: songs});
-    });
+  var artist;
+  Artist.findById(req.params.id)
+  .then(function(a){
+    if(!a) return error(res, "not found");
+    artist = a;
+    return artist.getSongs()
+  })
+  .then(function(songs){
+    res.render("artists/show", {artist: artist, songs: songs});
   });
 });
 
@@ -40,23 +45,29 @@ router.get("/artists/:id/edit", function(req, res){
 });
 
 router.put("/artists/:id", function(req, res){
-  console.log(req.body)
-  Artist.findById(req.params.id).then(function(artist){
+  var updatedArtist, songs;
+  Artist.findById(req.params.id)
+  .then(function(artist){
     if(!artist) return error(res, "not found");
-    artist.updateAttributes(req.body).then(function(updatedArtist){
-      updatedArtist.getSongs().then(function(songs){
-        res.render("artists/show", {artist: updatedArtist, songs: songs});
-      });
-    });
+    return artist.updateAttributes(req.body)
+  })
+  .then(function(artist){
+    updatedArtist = artist;
+    return updatedArtist.getSongs()
+  })
+  .then(function(songs){
+    res.render("artists/show", {artist: updatedArtist, songs: songs});
   });
 });
 
 router.delete("/artists/:id", function(req, res){
-  Artist.findById(req.params.id).then(function(artist){
+  Artist.findById(req.params.id)
+  .then(function(artist){
     if(!artist) return error(res, "not found");
-    artist.destroy().then(function(){
-      res.redirect("/artists")
-    });
+    return artist.destroy()
+  })
+  .then(function(){
+    res.redirect("/artists")
   });
 });
 

@@ -1,7 +1,11 @@
-module.exports = function(sequelize, DataTypes){
-  return sequelize.define("artist", {
-    name: DataTypes.STRING,
-    photoUrl: DataTypes.STRING,
-    nationality: DataTypes.STRING
+module.exports = function(sequelize, Sequelize){
+  var model = sequelize.define("artist", {
+    name: Sequelize.STRING,
+    photoUrl: Sequelize.STRING,
+    nationality: Sequelize.STRING
   });
+  model.sing = function(){
+    console.log("Tra la la!");
+  }
+  return model;
 }
