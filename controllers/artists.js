@@ -29,6 +29,8 @@ router.get("/artists/:id", function(req, res){
   Artist.findById(req.params.id)
   .then(function(a){
     if(!a) return error(res, "not found");
+    Artist.sing();
+    a.shout();
     artist = a;
     return artist.getSongs()
   })

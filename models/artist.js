@@ -3,7 +3,15 @@ module.exports = function(sequelize, Sequelize){
     name: Sequelize.STRING,
     photoUrl: Sequelize.STRING,
     nationality: Sequelize.STRING
-  });
+  },
+  {
+    instanceMethods: {
+      shout: function(){
+        console.log("My name is " + this.name);
+      }
+    }
+  }
+  );
   model.sing = function(){
     console.log("Tra la la!");
   }
