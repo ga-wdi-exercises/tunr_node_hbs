@@ -49,7 +49,7 @@ router.get("/songs/:id", function(req, res){
   var song;
   Song.findById(req.params.id)
   .then(function(s){
-    if(!song) return error(res, "not found");
+    if(!s) return error(res, "not found");
     song = s;
     return song.getArtist();
   })
