@@ -71,7 +71,7 @@ router.put("/songs/:id", function(req, res){
   if(!req.body.artistId) return error(res, "Artist not found");
   Song.findById(req.params.id)
   .then(function(s){
-    if(!song) return error(res, "not found");
+    if(!s) return error(res, "not found");
     song = s;
     return song.updateAttributes(req.body);
   })
