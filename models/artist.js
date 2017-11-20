@@ -1,19 +1,17 @@
-module.exports = function(sequelize, Sequelize){
-  var model = sequelize.define("artist", {
-    name: Sequelize.STRING,
-    photoUrl: Sequelize.STRING,
-    nationality: Sequelize.STRING
+const _ = require('lodash')
+
+module.exports = (ormInstance, {STRING, ...Sequelize}) => {
+  const Artist = ormInstance.define('artist', {
+    name: STRING,
+    photoUrl: STRING,
+    nationality: STRING
   },
   {
     instanceMethods: {
-      shout: function(){
-        console.log("My name is " + this.name);
+      shuffle: function(){
+        return _.sample(this.getSongs())
       }
     }
-  }
-  );
-  model.sing = function(){
-    console.log("Tra la la!");
-  }
-  return model;
+  })
+  return Artist
 }

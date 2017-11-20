@@ -1,8 +1,9 @@
-module.exports = function(sequelize, Sequelize){
-  return sequelize.define("song", {
-    title: Sequelize.STRING,
-    album: Sequelize.STRING,
-    previewUrl: Sequelize.STRING,
-    artistId: Sequelize.INTEGER
-  });
+module.exports = function(ormInstance, { STRING, INTEGER, ...Sequelize}){
+  const Song = ormInstance.define('song', {
+    title: STRING,
+    album: STRING,
+    previewUrl: STRING
+  })
+
+  return Song
 }

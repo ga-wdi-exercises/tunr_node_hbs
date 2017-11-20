@@ -1,16 +1,13 @@
-var Sequelize = require("sequelize");
-var sequelize = new Sequelize("postgres:///tunr_db");
-var Artist = sequelize.import("../models/artist");
-var Song = sequelize.import("../models/song");
+const Sequelize = require('sequelize')
+const ormInstance = new Sequelize('postgres:///tunr_db')
+const Artist = ormInstance.import('../models/artist')
+const Song = ormInstance.import('../models/song')
 
-Song.belongsTo(Artist);
-Artist.hasMany(Song);
+Artist.hasMany(Song, {onDelete: 'CASCADE'})
+Song.belongsTo(Artist)
 
 module.exports = {
-  Sequelize: Sequelize,
-  sequelize: sequelize,
-  models: {
-    Song: Song,
-    Artist: Artist
-  }
+  Sequelize,
+  ormInstance,
+  models: { Artist, Song }
 }

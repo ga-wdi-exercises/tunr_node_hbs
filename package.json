@@ -4,13 +4,14 @@
   "description": "Tunr is the worlds #1 music web app (those Spotify haters can't keep up with us).",
   "main": "index.js",
   "dependencies": {
-    "body-parser": "^1.13.3",
+    "body-parser": "^1.18.2",
     "express": "^4.13.3",
     "hbs": "^3.1.0",
+    "lodash": "^4.17.4",
     "method-override": "^2.3.5",
     "pg": "^4.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^3.5.1"
+    "sequelize": "^3.30.4"
   },
   "devDependencies": {},
   "scripts": {
